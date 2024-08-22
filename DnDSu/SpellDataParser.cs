@@ -2,7 +2,7 @@ using HtmlAgilityPack;
 
 namespace DnDSu;
 
-public class SpellDataParser
+internal class SpellDataParser
 {
     private readonly HtmlDocument _document;
     private readonly string _url;
