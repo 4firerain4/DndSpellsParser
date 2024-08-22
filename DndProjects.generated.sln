@@ -5,6 +5,8 @@ VisualStudioVersion = 17.5.002.0
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DndSpellsParser", "DndSpellsParser\DndSpellsParser.csproj", "{49254E76-B27C-43C3-94E6-AA26094E4647}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "DnDSu", "DnDSu\DnDSu.csproj", "{67803FB9-D8A9-4CD5-A68C-FBB85EC1FAEE}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{49254E76-B27C-43C3-94E6-AA26094E4647}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{49254E76-B27C-43C3-94E6-AA26094E4647}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{49254E76-B27C-43C3-94E6-AA26094E4647}.Release|Any CPU.Build.0 = Release|Any CPU
+		{67803FB9-D8A9-4CD5-A68C-FBB85EC1FAEE}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{67803FB9-D8A9-4CD5-A68C-FBB85EC1FAEE}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{67803FB9-D8A9-4CD5-A68C-FBB85EC1FAEE}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{67803FB9-D8A9-4CD5-A68C-FBB85EC1FAEE}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
