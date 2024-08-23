@@ -1,6 +1,6 @@
 namespace DnDSu;
 
-public class SpellParser
+public class ParsersManager
 {
     public static async Task<IEnumerable<Spell>> Parse()
     {
@@ -12,10 +12,10 @@ public class SpellParser
 
         using HttpClient client = new();
 
-        return await TryParse(links, client);
+        return await TryParseSpellsData(links, client);
     }
 
-    private static async Task<IEnumerable<Spell>> TryParse(IEnumerable<string> links, HttpClient client)
+    private static async Task<IEnumerable<Spell>> TryParseSpellsData(IEnumerable<string> links, HttpClient client)
     {
         const int maxRetries = 10;
         int totalLinks = links.Count();
