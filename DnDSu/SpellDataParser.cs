@@ -58,7 +58,7 @@ internal class SpellDataParser
 
     private string PullDescription()
     {
-        var description = _document.DocumentNode.SelectSingleNode("//div[@itemprop='description']").InnerText;
+        var description = _document.DocumentNode.SelectSingleNode("//div[@itemprop='description']").InnerText.Replace("&nbsp;", " ");
         return description;
     }
 
