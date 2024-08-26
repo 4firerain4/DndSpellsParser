@@ -86,7 +86,10 @@ public class SpellDataParserTests
     {
         using var client = new HttpClient();
         var spell = (await new SpellDataParser(client, "https://dnd.su/homebrew/spells/3590-beseda_s_prizrakom/").ConstructSpell()).spell;
+
+        var expected = ("Беседа с призраком", string.Empty);
+        var actual = (spell.Title, spell.TitleEn);
         
-        Assert.Equal(string.Empty, spell.TitleEn);
+        Assert.Equal(expected, actual);
     }
 }
