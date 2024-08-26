@@ -4,7 +4,7 @@ namespace DnDSu.UnitTests;
 
 public class SpellDataParserTests
 {
-    private static Spell _spell = null;
+    private static Spell _spell = null!;
 
     public SpellDataParserTests()
     {
