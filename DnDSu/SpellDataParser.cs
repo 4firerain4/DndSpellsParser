@@ -2,7 +2,7 @@ using HtmlAgilityPack;
 
 namespace DnDSu;
 
-public class SpellDataParser
+internal class SpellDataParser
 {
     private readonly HtmlDocument _document;
     private readonly string _url;
@@ -19,12 +19,12 @@ public class SpellDataParser
     {
         Spell spell = new();
         spell.Url = _url;
-        
+
         try
         {
             var html = await LoadPage(_url);
             _document.LoadHtml(html);
-            
+
             (spell.Title, spell.TitleEn) = PullTitles();
             (spell.Level, spell.School) = PullLevelLine();
             spell.CastingTime = PullStrongList(2);
@@ -34,23 +34,20 @@ public class SpellDataParser
             spell.UnitClasses = PullStrongList(6).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             spell.Sources = PullSources();
             spell.Description = PullDescription();
-            
         }
         catch
         {
-            #if DEBUG
-                Console.WriteLine($"dnd.su parser >> Ошибка сборки заклинания: {spell.Url}.");
-            #endif
+#if DEBUG
+            Console.WriteLine($"dnd.su parser >> Ошибка сборки заклинания: {spell.Url}.");
+#endif
             return (spell, false);
         }
-
 
         return (spell, true);
     }
 
     private string[] PullSources()
         => PullStrongList(7).Replace("«<span>", "").Replace("</span>»", "").Split(",", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
-
 
     private (string title, string titleEn) PullTitles()
     {
@@ -61,7 +58,7 @@ public class SpellDataParser
 
     private string PullDescription()
     {
-        var description = _document.DocumentNode.SelectSingleNode("//div[@itemprop='description']").InnerText;
+        var description = _document.DocumentNode.SelectSingleNode("//div[@itemprop='description']").InnerText.Replace("&nbsp;", " ");
         return description;
     }
 
