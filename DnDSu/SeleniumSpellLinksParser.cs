@@ -6,9 +6,9 @@ internal class SeleniumSpellLinksParser : IDisposable
 {
     private readonly IWebDriver _driver = WebDriversFabric.GetDriver();
 
-    public async Task<IEnumerable<string>> Parse(string url)
+    public async Task<IEnumerable<string>> GetLinksFromUrl(string url)
     {
-        _driver.Navigate().GoToUrl(url);
+        await _driver.Navigate().GoToUrlAsync(url);
 
         await LoadAllPageElements();
 
@@ -20,10 +20,12 @@ internal class SeleniumSpellLinksParser : IDisposable
 
     private async Task LoadAllPageElements()
     {
-        var scrollDelay = 50;
+        const int scrollDelay = 70;
+        const int scrollCount = 15;
+        
         var footer = _driver.FindElement(By.TagName("footer"));
 
-        for (int i = 0; i < 10; i++)
+        for (int i = 0; i < scrollCount; i++) // Загрузка заклинаний при прокрутке
         {
             ((IJavaScriptExecutor)_driver).ExecuteScript("arguments[0].scrollIntoView(true);", footer);
             await Task.Delay(scrollDelay);
