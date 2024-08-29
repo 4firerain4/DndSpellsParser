@@ -5,6 +5,6 @@ namespace Shared
     public interface ISpellParser
     {
         double Progress { get; }
-        Task<IEnumerable<Spell>> ParseSpellsAsynk();
+        Task<IEnumerable<Spell>> ParseSpellsAsync();
     }
 }
