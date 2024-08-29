@@ -1,46 +1,58 @@
 namespace DnDSu;
 
-public class ParsersManager
+public class ParsersManager : IDisposable
 {
-    public static async Task<IEnumerable<Spell>> Parse()
+    public double ProgressStatus => 1 - (double)_linksLeft / _totalLinks;
+
+    private int _totalLinks = 1;
+    private int _linksLeft = 1;
+    private string[] _links = null!;
+    private readonly HttpClient _httpClient = new();
+
+    public async Task<IEnumerable<Spell>> Parse()
     {
-        using var handbook = new SeleniumSpellLinksParser();
-        using var homebrew = new SeleniumSpellLinksParser();
+        using var linksParser = new SeleniumSpellLinksParser();
+        
+        _links = (await linksParser.GetLinksFromUrl("https://dnd.su/spells/")).Concat(await linksParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/")).ToArray();
+        
+        _totalLinks = _links.Length;
+        _linksLeft = _totalLinks;
 
-        var links = await handbook.Parse("https://dnd.su/spells/");
-        links = links.Concat(await homebrew.Parse("https://dnd.su/homebrew/spells/"));
-
-        using HttpClient client = new();
-
-        return await TryParseSpellsData(links, client);
+        return await TryParseSpellsData();
     }
 
-    private static async Task<IEnumerable<Spell>> TryParseSpellsData(IEnumerable<string> links, HttpClient client)
+    private async Task<IEnumerable<Spell>> TryParseSpellsData()
     {
         const int maxRetries = 10;
-        int totalLinks = links.Count();
         IEnumerable<Spell> parsedSpells = new List<Spell>();
 
         for (int i = 0; i < maxRetries; i++)
         {
-            var spellConstructors = links.Select(x =>
+            var spellConstructors = _links.Select(x =>
             {
                 Thread.Sleep(200); // Сайт начал блочить без этой задержки
-                return new SpellDataParser(client, x).ConstructSpell();
+                return new SpellDataParser(_httpClient, x).ConstructSpell();
             }).ToArray();
-            
+
             await Task.WhenAll(spellConstructors);
             parsedSpells = parsedSpells.Concat(spellConstructors.Where(x => x.Result.isSuccess).Select(x => x.Result.spell));
 
-            links = spellConstructors.Where(x => !x.Result.isSuccess).Select(x => x.Result.spell.Url);
-            if (!links.Any()) break;
+            _links = spellConstructors.Where(x => !x.Result.isSuccess).Select(x => x.Result.spell.Url).ToArray();
+            _linksLeft = _links.Length;
+
+            if (_linksLeft == 0) break;
         }
 
-        if (links.Any())
+        if (_links.Any())
         {
-            Console.WriteLine($"dnd.su parser >> {links.Count()} из {totalLinks} ссылок не удалось спарсить.");
+            Console.WriteLine($"dnd.su parser >> {_links.Count()} из {_totalLinks} ссылок не удалось спарсить.");
         }
 
         return parsedSpells;
+    }
+
+    public void Dispose()
+    {
+        _httpClient.Dispose();
     }
 }

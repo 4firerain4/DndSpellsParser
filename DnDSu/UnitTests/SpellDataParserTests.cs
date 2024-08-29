@@ -31,6 +31,12 @@ public class SpellDataParserTests
     {
         Assert.Equal("2 уровень", _spell.Level);
     }
+    
+    [Fact]
+    public void ParsingComponents()
+    {
+        Assert.Equal("В, С, М (осколок стекла)", _spell.Components);
+    }
 
     [Fact]
     public void ParsingSchool()
