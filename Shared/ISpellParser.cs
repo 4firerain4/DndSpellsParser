@@ -1,8 +1,6 @@
-using ISpellParser;
-
 namespace Shared
 {
-    public interface ISpellParser
+    public interface ISpellParser : IDisposable
     {
         double Progress { get; }
         Task<IEnumerable<Spell>> ParseSpellsAsync();
