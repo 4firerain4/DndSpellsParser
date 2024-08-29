@@ -1,4 +1,5 @@
 using HtmlAgilityPack;
+using Shared;
 
 namespace DnDSu;
 
