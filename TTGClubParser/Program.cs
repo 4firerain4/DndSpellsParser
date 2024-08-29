@@ -1,10 +1,9 @@
 ﻿namespace TTGClubParser;
 
-class Program
+public class Prog
 {
-    static void Main(string[] args)
+    public static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        Console.ReadKey();
+        
     }
 }
