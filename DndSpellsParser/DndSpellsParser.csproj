@@ -9,6 +9,8 @@
 
   <ItemGroup>
     <ProjectReference Include="..\DnDSu\DnDSu.csproj" />
+    <ProjectReference Include="..\Shared\Shared.csproj" />
+    <ProjectReference Include="..\TTGClubParser\TTGClubParser.csproj" />
   </ItemGroup>
 
 </Project>
