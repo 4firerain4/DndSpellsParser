@@ -1,15 +1,18 @@
+using Shared;
+using Shared;
+
 namespace DnDSu;
 
-public class ParsersManager : IDisposable
+public class ParsersManager : Shared.ISpellParser
 {
-    public double ProgressStatus => 1 - (double)_linksLeft / _totalLinks;
+    public double Progress => 1 - (double)_linksLeft / _totalLinks;
 
     private int _totalLinks = 1;
     private int _linksLeft = 1;
     private string[] _links = null!;
     private readonly HttpClient _httpClient = new();
 
-    public async Task<IEnumerable<Spell>> Parse()
+    public async Task<IEnumerable<Spell>> ParseSpellsAsync()
     {
         using var linksParser = new SeleniumSpellLinksParser();
         
@@ -45,7 +48,7 @@ public class ParsersManager : IDisposable
 
         if (_links.Any())
         {
-            Console.WriteLine($"dnd.su parser >> {_links.Count()} из {_totalLinks} ссылок не удалось спарсить.");
+            Console.WriteLine($"dnd.su parser >> {_links.Length} из {_totalLinks} ссылок не удалось спарсить.");
         }
 
         return parsedSpells;

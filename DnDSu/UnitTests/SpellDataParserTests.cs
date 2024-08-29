@@ -1,3 +1,4 @@
+using Shared;
 using Xunit;
 
 namespace DnDSu.UnitTests;
