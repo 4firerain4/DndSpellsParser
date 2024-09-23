@@ -1,10 +1,16 @@
-﻿namespace DndSpellsParser;
+﻿using Shared;
+using TTGClubParser;
+
+namespace DndSpellsParser;
 
 class Program
 {
-    static void Main(string[] args)
+    static async Task Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
-        Console.ReadKey();
+        string url = args[0]; 
+        ParserManager manager = new();
+        await manager.ParseSpellsAsync(url);
+
+        Console.WriteLine("Done");
     }
 }
