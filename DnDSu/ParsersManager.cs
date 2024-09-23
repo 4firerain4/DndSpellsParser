@@ -12,7 +12,7 @@ public class ParsersManager : Shared.ISpellParser
     private string[] _links = null!;
     private readonly HttpClient _httpClient = new();
 
-    public async Task<IEnumerable<Spell>> ParseSpellsAsync()
+    public async Task<IEnumerable<Spell>> ParseSpellsAsync(params string[] url)
     {
         using var linksParser = new SeleniumSpellLinksParser();
         
