@@ -1,8 +1,8 @@
 using Shared;
 
-namespace TTGClubParser
+namespace TTGClub
 {
-    public class ParserManager : Shared.ISpellParser
+    public class ParserManager : ISpellParser
     {
         public double Progress => throw new NotImplementedException();
 
@@ -11,9 +11,9 @@ namespace TTGClubParser
             throw new NotImplementedException();
         }
 
-        public async Task<IEnumerable<Spell>> ParseSpellsAsync(params string[] args)
+        public async Task<IEnumerable<Spell>> ParseSpellsAsync()
         {
-            string url = args[0];
+            string url = ""; // TODO: Зачем ты принимаешь массив ссылок? Твой парсер должен сам внутренней логикой их получить с сайта и вернуть уже спаршенные заклинания 
             List<string> jsonLinks = await Parser.PostRequestAsync(url);
 
             List<string> clearLinks = JsongSpellParser.ParseLinks(jsonLinks);

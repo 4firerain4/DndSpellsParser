@@ -1,6 +1,6 @@
 using System.Text.Json;
 
-namespace TTGClubParser
+namespace TTGClub
 {
     public class Parser
     {

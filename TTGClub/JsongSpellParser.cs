@@ -2,7 +2,7 @@ using Shared;
 using System.Text.Json;
 using System.Text.Json.Nodes;
 
-namespace TTGClubParser
+namespace TTGClub
 {
     public class JsongSpellParser
     {

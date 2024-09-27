@@ -1,7 +1,4 @@
-﻿using Shared;
-using TTGClubParser;
-
-namespace DndSpellsParser;
+﻿namespace DndSpellsParser;
 
 class Program
 {
