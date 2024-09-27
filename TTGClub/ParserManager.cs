@@ -4,7 +4,7 @@ namespace TTGClub
 {
     public class ParserManager : ISpellParser
     {
-        public double Progress => throw new NotImplementedException();
+        public double Progress => 0; // TODO: Доделать прогресс
 
         public void Dispose()
         {
