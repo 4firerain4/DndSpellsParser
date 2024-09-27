@@ -3,16 +3,16 @@ using Xunit;
 
 namespace DnDSu.UnitTests;
 
-public class SpellDataParserTests
+public class SpellConstructorTests
 {
     private static Spell _spell = null!;
 
-    public SpellDataParserTests()
+    public SpellConstructorTests()
     {
         if (_spell is not null) return;
-        
+
         using var client = new HttpClient();
-        _spell = new SpellDataParser(client, "https://dnd.su/homebrew/spells/8475-arcane_retribution/").ConstructSpell().Result.spell;
+        _spell = new SpellConstructor(client, "https://dnd.su/homebrew/spells/8475-arcane_retribution/").ConstructSpell().Result;
     }
 
     [Fact]
@@ -32,7 +32,7 @@ public class SpellDataParserTests
     {
         Assert.Equal("2 уровень", _spell.Level);
     }
-    
+
     [Fact]
     public void ParsingComponents()
     {
@@ -87,16 +87,36 @@ public class SpellDataParserTests
 
         Assert.Equal(desc, _spell.Description);
     }
-    
+
     [Fact]
     public async Task ParsingSpellWithoutEngTitle()
     {
         using var client = new HttpClient();
-        var spell = (await new SpellDataParser(client, "https://dnd.su/homebrew/spells/3590-beseda_s_prizrakom/").ConstructSpell()).spell;
+        var spell = await new SpellConstructor(client, "https://dnd.su/homebrew/spells/3590-beseda_s_prizrakom/").ConstructSpell();
 
         var expected = ("Беседа с призраком", string.Empty);
         var actual = (spell.Title, spell.TitleEn);
-        
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task ParsingSpellWithWrongUrl()
+    {
+        using var client = new HttpClient();
+        var spellTask = new SpellConstructor(client, "https://dnd.su/homebrew/spells/3590-someWrongUrl/").ConstructSpell();
+        string actual = String.Empty;
+        string expected = "Ошибка сборки заклинания: https://dnd.su/homebrew/spells/3590-someWrongUrl/";
+
+        try
+        {
+            await spellTask;
+        }
+        catch (Exception e)
+        {
+            actual = e.Message;
+        }
+
         Assert.Equal(expected, actual);
     }
 }

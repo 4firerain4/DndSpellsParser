@@ -3,23 +3,28 @@ using Shared;
 
 namespace DnDSu;
 
-internal class SpellDataParser
+/// <summary>
+/// Конструирует конкретное заклинание
+/// </summary>
+internal class SpellConstructor
 {
     private readonly HtmlDocument _document;
     private readonly string _url;
     private readonly HttpClient _client;
 
-    public SpellDataParser(HttpClient client, string url)
+    public SpellConstructor(HttpClient client, string url)
     {
         _document = new();
         _url = url;
         _client = client;
     }
 
-    public async Task<(Spell spell, bool isSuccess)> ConstructSpell()
+    public async Task<Spell> ConstructSpell()
     {
-        Spell spell = new();
-        spell.Url = _url;
+        Spell spell = new()
+        {
+            Url = _url
+        };
 
         try
         {
@@ -41,10 +46,9 @@ internal class SpellDataParser
 #if DEBUG
             Console.WriteLine($"dnd.su parser >> Ошибка сборки заклинания: {spell.Url}.");
 #endif
-            return (spell, false);
+            throw new Exception($"Ошибка сборки заклинания: {spell.Url}");
         }
-
-        return (spell, true);
+        return spell;
     }
 
     private string[] PullSources()
