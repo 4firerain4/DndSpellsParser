@@ -2,9 +2,9 @@ using System.Text.Json;
 
 namespace TTGClub
 {
-    public class Parser
+    internal static class Parser
     {
-        static public async Task<List<string>> PostRequestAsync(params string[] url)
+        public static async Task<List<string>> PostRequestAsync(params string[] url)
         {
             var requestBody = """{"page":0,"size":999999999,"search":{"value":"","exact":false},"order":[{"field":"level","direction":"asc"},{"field":"name","direction":"asc"}]}""";
             

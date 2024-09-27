@@ -4,7 +4,7 @@ using System.Text.Json.Nodes;
 
 namespace TTGClub
 {
-    public class JsongSpellParser
+    internal class JsongSpellParser
     {
         public static List<string> ParseLinks(List<string> jsonSpells)
         {
