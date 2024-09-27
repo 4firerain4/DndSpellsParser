@@ -9,7 +9,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DnDSu", "DnDSu\DnDSu.csproj
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Shared", "Shared\Shared.csproj", "{6B1E324A-2E94-4DC2-AAAD-1E5DBEB7F62B}"
 EndProject
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTGClubParser", "TTGClubParser\TTGClubParser.csproj", "{5A603AC9-22B8-4191-8555-53CBA1677F8C}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TTGClub", "TTGClub\TTGClub.csproj", "{5A603AC9-22B8-4191-8555-53CBA1677F8C}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
