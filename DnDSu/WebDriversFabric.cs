@@ -57,6 +57,6 @@ internal static class WebDriversFabric
         mozOptions.SetLoggingPreference(LogType.Performance, LogLevel.Off);
         mozOptions.SetLoggingPreference(LogType.Profiler, LogLevel.Off);
 
-        return new FirefoxDriver(mozService, mozOptions); //TODO: Подключаться удалённо, чтоб избежать лога?
+        return new FirefoxDriver(mozService, mozOptions);
     }
 }
