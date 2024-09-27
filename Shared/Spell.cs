@@ -11,8 +11,13 @@ public class Spell
     public string Distance;
     public string CastingTime;
     public string Duration;
-    public string Components;
+    public string Components; //TODO: исправить принцип парсинга для DnDSu
+    public string ComponentS;
+    public string ComponentV;
+    public string ComponentM;
     public string Description;
     public string[] UnitClasses;
+    public string[] SubClasses;
+    public string[] Races;
     public string[] Sources;
 }
