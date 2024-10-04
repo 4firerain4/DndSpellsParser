@@ -29,7 +29,7 @@ namespace TTGClub
                 spell.TitleEn = node["name"]["eng"].ToString();
                 spell.Level = node["level"].ToString();
                 spell.School = node["school"].ToString();
-                spell.ComponentV = node["components"]["v"]?.ToString() ?? null;
+                spell.ComponentV = node["components"]["v"]?.ToString() ?? null; //TODO: поменяй строковые типы на булево.
                 spell.ComponentS = node["components"]["s"]?.ToString() ?? null;
                 spell.ComponentM = node["components"]["m"]?.ToString() ?? null;
                 spell.Url = node["url"].ToString();

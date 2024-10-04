@@ -35,11 +35,11 @@ internal class SpellConstructor
             (spell.Level, spell.School) = PullLevelLine();
             spell.CastingTime = PullStrongList(2);
             spell.Distance = PullStrongList(3);
-            spell.Components = PullStrongList(4);
             spell.Duration = PullStrongList(5);
-            spell.UnitClasses = PullStrongList(6).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
             spell.Sources = PullSources();
             spell.Description = PullDescription();
+            (spell.ComponentS, spell.ComponentV, spell.ComponentM) = PullComponents();
+            spell.UnitClasses = PullStrongList(6).Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
         }
         catch
         {
@@ -48,6 +48,7 @@ internal class SpellConstructor
 #endif
             throw new Exception($"Ошибка сборки заклинания: {spell.Url}");
         }
+
         return spell;
     }
 
@@ -80,6 +81,25 @@ internal class SpellConstructor
         return (level, school);
     }
 
+    private (bool S, bool V, string M) PullComponents()
+    {
+        const int lengthOfComponentPart = 9;
+        bool s, v, m = false;
+        string materials = string.Empty;
+
+        string componentLine = PullStrongList(4);
+        int indexOfMaterials = componentLine.IndexOf("М (", StringComparison.Ordinal);
+        if (indexOfMaterials != -1) m = true;
+        int rangePos = Math.Min(lengthOfComponentPart, m ? indexOfMaterials : componentLine.Length);
+
+        s = componentLine[..rangePos].Contains("С");
+        v = componentLine[..rangePos].Contains("В");
+
+        if (m) materials = componentLine[(indexOfMaterials + 3)..^1]; // 3 - длина "М ("
+
+        return (s, v, materials);
+    }
+
     private string PullStrongList(int line)
     {
         var data = _document.DocumentNode.SelectSingleNode($"(//ul[contains(@class,'card__article-body')]/li)[{line}]").InnerHtml
@@ -89,7 +109,6 @@ internal class SpellConstructor
 
     private async Task<string> LoadPage(string url)
     {
-        string result = string.Empty;
         using HttpResponseMessage response = await _client.GetAsync(url);
 
         if (response.IsSuccessStatusCode)
