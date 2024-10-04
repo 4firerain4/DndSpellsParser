@@ -2,7 +2,7 @@ using Shared;
 
 namespace DnDSu;
 
-public class DndSuSpellParser : ISpellParser
+public class SpellParser : ISpellParser
 {
     public double Progress => _linksProcessed / (double)_totalLinks; // TODO: Расчёт с учётом Selenium
 
