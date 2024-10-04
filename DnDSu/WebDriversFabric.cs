@@ -6,15 +6,15 @@ namespace DnDSu;
 
 internal static class WebDriversFabric
 {
-    public static IWebDriver GetDriver()
+    public static IWebDriver GetDriver() //TODO: поиск подходящего драйвера
     {
         try
         {
-            return GetChromeDriver();
+            return GetFirefoxDriver();
         }
         catch
         {
-            return GetFirefoxDriver();
+            return GetChromeDriver();
         }
     }
 
