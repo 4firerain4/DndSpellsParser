@@ -34,9 +34,36 @@ public class SpellConstructorTests
     }
 
     [Fact]
-    public void ParsingComponents()
+    public void ParsingComponentsSVM()
     {
-        Assert.Equal("В, С, М (осколок стекла)", _spell.Components);
+        var expected = (true, true, "осколок стекла");
+        var actual = (_spell.ComponentS, _spell.ComponentV, _spell.ComponentM);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task ParsingComponentsSV()
+    {
+        using var client = new HttpClient();
+        var spell = await new SpellConstructor(client, "https://dnd.su/homebrew/spells/678-adaptation/").ConstructSpell();
+
+        var expected = (true, true, String.Empty);
+        var actual = (spell.ComponentS, spell.ComponentV, spell.ComponentM);
+
+        Assert.Equal(expected, actual);
+    }
+
+    [Fact]
+    public async Task ParsingComponentsM()
+    {
+        using var client = new HttpClient();
+        var spell = await new SpellConstructor(client, "https://dnd.su/homebrew/spells/724-velikii-krug-uderzaniia/").ConstructSpell();
+
+        var expected = (false, false, "Камни с изображением рун на них, порошок из кварца");
+        var actual = (spell.ComponentS, spell.ComponentV, spell.ComponentM);
+
+        Assert.Equal(expected, actual);
     }
 
     [Fact]
@@ -66,9 +93,9 @@ public class SpellConstructorTests
     [Fact]
     public void ParsingClasses()
     {
-        var classes = "волшебник, колдун, чародей".Split(',', StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries);
+        var expected = new[] { "волшебник", "колдун", "чародей" };
 
-        Assert.Equal(classes, _spell.UnitClasses);
+        Assert.Equal(expected, _spell.UnitClasses);
     }
 
     [Fact]
