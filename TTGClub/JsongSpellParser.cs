@@ -29,8 +29,8 @@ namespace TTGClub
                 spell.TitleEn = node["name"]["eng"].ToString();
                 spell.Level = node["level"].ToString();
                 spell.School = node["school"].ToString();
-                spell.ComponentV = node["components"]["v"]?.ToString() ?? null; //TODO: поменяй строковые типы на булево.
-                spell.ComponentS = node["components"]["s"]?.ToString() ?? null;
+                spell.ComponentV = bool.Parse(node["components"]["v"]?.ToString()); //TODO: поменяй строковые типы на булево.
+                spell.ComponentS = bool.Parse(node["components"]["s"]?.ToString());
                 spell.ComponentM = node["components"]["m"]?.ToString() ?? null;
                 spell.Url = node["url"].ToString();
                 spell.Duration = node["duration"].ToString();
@@ -56,7 +56,7 @@ namespace TTGClub
 
         private static string[] ParseJsonMassive(JsonArray jsonArray)
         {
-            if (jsonArray == null) return null;
+            if (jsonArray == null) return Array.Empty<string>();
 
             List<string> result = new();
 
