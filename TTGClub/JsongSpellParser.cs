@@ -1,6 +1,7 @@
 using Shared;
 using System.Text.Json;
 using System.Text.Json.Nodes;
+#pragma warning disable CS8602 // Dereference of a possibly null reference.
 
 namespace TTGClub
 {
