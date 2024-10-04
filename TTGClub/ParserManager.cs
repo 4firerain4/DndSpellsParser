@@ -13,7 +13,7 @@ namespace TTGClub
 
         public async Task<IEnumerable<Spell>> ParseSpellsAsync()
         {
-            string url = ""; // TODO: Зачем ты принимаешь массив ссылок? Твой парсер должен сам внутренней логикой их получить с сайта и вернуть уже спаршенные заклинания 
+            string url = "https://ttg.club/api/v1/spells";
             List<string> jsonLinks = await Parser.PostRequestAsync(url);
 
             List<string> clearLinks = JsongSpellParser.ParseLinks(jsonLinks);
