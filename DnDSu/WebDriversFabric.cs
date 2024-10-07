@@ -1,21 +1,71 @@
+using System.Runtime.InteropServices;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
+using OpenQA.Selenium.Edge;
 using OpenQA.Selenium.Firefox;
 
 namespace DnDSu;
 
 internal static class WebDriversFabric
 {
-    public static IWebDriver GetDriver() //TODO: поиск подходящего драйвера
+    public static IWebDriver GetDriver()
     {
-        try
-        {
-            return GetFirefoxDriver();
-        }
-        catch
-        {
+        var browser = GetBrowser();
+        if (browser == "Chrome")
             return GetChromeDriver();
+        if (browser == "Firefox")
+            return GetFirefoxDriver();
+        if (browser == "Edge")
+            return GetEdgeDriver();
+        
+        throw new Exception("Browser not detected");
+    }
+
+    private static string GetBrowser()
+    {
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            if (Directory.Exists(@"C:\Program Files\Google\Chrome"))
+                return "Chrome";
+            if (Directory.Exists(@"C:\Program Files\Mozilla Firefox"))
+                return "Firefox";
+            return "Edge";
         }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            if (File.Exists("/usr/bin/chromium"))
+                return "Chrome";
+            return "Firefox";
+        }
+
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.OSX))
+        {
+            if (Directory.Exists("/Applications/Google Chrome.app"))
+                return "Chrome";
+            if (Directory.Exists("/Applications/Firefox.app"))
+                return "Firefox";
+        }
+
+        return "undefined";
+    }
+
+    private static IWebDriver GetEdgeDriver()
+    {
+        var service = EdgeDriverService.CreateDefaultService();
+        service.HideCommandPromptWindow = true;
+        service.EnableVerboseLogging = false;
+        service.SuppressInitialDiagnosticInformation = true;
+
+        var options = new EdgeOptions();
+        options.AddArgument("headless");
+        options.AddArgument("window-size=1200x600");
+        options.AddArgument("--disable-logging");
+        options.AddArgument("--log-level=3");
+        options.AddArgument("--disable-extensions");
+        options.AddArgument("--mute-audio");
+
+        return new EdgeDriver(service, options);
     }
 
     private static IWebDriver GetChromeDriver()
