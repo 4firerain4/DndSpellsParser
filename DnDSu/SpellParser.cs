@@ -13,14 +13,18 @@ public class SpellParser : ISpellParser
 
     public async Task<IEnumerable<Spell>> ParseSpellsAsync()
     {
-        using var homebrewParser = new SeleniumSpellLinksParser();
-        using var handbookParser = new SeleniumSpellLinksParser();
-
-        _links = (await handbookParser.GetLinksFromUrl("https://dnd.su/spells/")).Concat(await homebrewParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/")).ToArray();
-
+        _links = await GetAllSpellLinks();
         _totalLinks = _links.Length;
 
         return await TryParseSpellsData();
+    }
+
+    private async Task<string[]> GetAllSpellLinks()
+    {
+        using var homebrewParser = new SeleniumSpellLinksParser();
+        using var handbookParser = new SeleniumSpellLinksParser();
+
+        return (await handbookParser.GetLinksFromUrl("https://dnd.su/spells/")).Concat(await homebrewParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/")).ToArray();
     }
 
     private async Task<IEnumerable<Spell>> TryParseSpellsData()
