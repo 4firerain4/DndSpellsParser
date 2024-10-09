@@ -8,7 +8,7 @@ namespace TTGClub
 
         public void Dispose()
         {
-            throw new NotImplementedException();
+            
         }
 
         public async Task<IEnumerable<Spell>> ParseSpellsAsync()

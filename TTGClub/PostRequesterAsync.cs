@@ -9,7 +9,7 @@ namespace TTGClub
             var requestBody = """{"page":0,"size":999999999,"search":{"value":"","exact":false},"order":[{"field":"level","direction":"asc"},{"field":"name","direction":"asc"}]}""";
             
             using var client = new HttpClient();
-            var content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
+            using var content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
 
             List<string> result = new();
 
@@ -17,7 +17,7 @@ namespace TTGClub
 
             foreach (string i in url)
             {
-                var response = await client.PostAsync(i, content);
+                using var response = await client.PostAsync(i, content);
                 var responseBody = await response.Content.ReadAsStringAsync();
                 result.Add(responseBody);
 

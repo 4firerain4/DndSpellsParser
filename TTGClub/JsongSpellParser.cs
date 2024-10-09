@@ -20,7 +20,7 @@ namespace TTGClub
 
         public static List<Spell> ParseInfo(List<string> jsonFullSpells)
         {
-            List<Spell> spells = new();
+            List<Spell> spells = [];
 
             foreach (var json in jsonFullSpells)
             {
@@ -38,7 +38,7 @@ namespace TTGClub
                 spell.Distance = node["range"].ToString();
                 spell.Description = node["description"].ToString();
                 spell.CastingTime = node["time"].ToString();
-                spell.Sources = new [] {node["source"]["name"]?.ToString() ?? null};
+                spell.Sources = [node["source"]["name"]?.ToString() ?? null]; // TODO: массив источников заполняется одним значением?
 
                 spell.UnitClasses = ParseJsonMassive(node["classes"]?.AsArray() ?? null);
                 spell.SubClasses = ParseJsonMassive(node["subclasses"]?.AsArray() ?? null);
@@ -55,9 +55,9 @@ namespace TTGClub
             return spells;
         }
 
-        private static string[] ParseJsonMassive(JsonArray jsonArray)
+        private static string[] ParseJsonMassive(JsonArray? jsonArray)
         {
-            if (jsonArray == null) return Array.Empty<string>();
+            if (jsonArray is null) return Array.Empty<string>();
 
             List<string> result = new();
 
