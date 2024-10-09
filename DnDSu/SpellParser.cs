@@ -24,7 +24,7 @@ public class SpellParser : ISpellParser
         using var linksParser = new SeleniumSpellLinksParser();
 
         var homebrewLinks = await linksParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/");
-        await Task.Delay(500); // Без задержки селениум иногда выкидывает ошибку
+        await Task.Delay(2000); // Без задержки селениум иногда выкидывает ошибку
         var handbookLinks = await linksParser.GetLinksFromUrl("https://dnd.su/spells/");
 
         return  homebrewLinks.Concat(handbookLinks).ToArray();
@@ -33,7 +33,7 @@ public class SpellParser : ISpellParser
     private async Task<IEnumerable<Spell>> TryParseSpellsData()
     {
         const int maxRetries = 10;
-        IEnumerable<Spell> parsedSpells = new List<Spell>();
+        var parsedSpells = new List<Spell>();
 
         for (int i = 0; i < maxRetries; i++)
         {
@@ -41,7 +41,7 @@ public class SpellParser : ISpellParser
 
             var filteredSpells = await FilterSuccessParsedSpells(spellConstructors);
 
-            parsedSpells = filteredSpells.Sucess;
+            parsedSpells.AddRange(filteredSpells.Sucess);
             _links = filteredSpells.Failed.ToArray();
 
             _linksProcessed = _totalLinks - _links.Length; // Уточнение подсчёта ссылок.
@@ -51,7 +51,7 @@ public class SpellParser : ISpellParser
 
         if (_links.Length != 0)
         {
-            Console.WriteLine($"dnd.su parser >> {_links.Length} из {_totalLinks} ссылок не удалось спарсить.");
+            Console.WriteLine($"dnd.su parser >> {_totalLinks - parsedSpells.Count} из {_totalLinks} ссылок не удалось спарсить.");
         }
 
         return parsedSpells;
@@ -69,7 +69,7 @@ public class SpellParser : ISpellParser
                 var spell = await i;
 
                 success.Add(spell);
-                _linksProcessed++;
+                    _linksProcessed++;
             }
             catch (Exception e)
             {
