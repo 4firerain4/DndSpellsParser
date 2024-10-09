@@ -6,13 +6,13 @@ internal class SeleniumSpellLinksParser : IDisposable
 {
     private readonly IWebDriver _driver = WebDriversFabric.GetDriver();
 
-    public async Task<IEnumerable<string>> GetLinksFromUrl(string url)
+    public async Task<string[]> GetLinksFromUrl(string url)
     {
         await _driver.Navigate().GoToUrlAsync(url);
 
         await LoadAllPageElements();
 
-        return GetLinks();
+        return GetLinks().ToArray();
     }
 
     private IEnumerable<string> GetLinks()
@@ -20,7 +20,7 @@ internal class SeleniumSpellLinksParser : IDisposable
 
     private async Task LoadAllPageElements()
     {
-        const int scrollDelay = 70;
+        const int scrollDelay = 100;
         const int scrollCount = 15;
         
         var footer = _driver.FindElement(By.TagName("footer"));

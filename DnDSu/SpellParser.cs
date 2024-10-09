@@ -21,10 +21,13 @@ public class SpellParser : ISpellParser
 
     private async Task<string[]> GetAllSpellLinks()
     {
-        using var homebrewParser = new SeleniumSpellLinksParser();
-        using var handbookParser = new SeleniumSpellLinksParser();
+        using var linksParser = new SeleniumSpellLinksParser();
 
-        return (await handbookParser.GetLinksFromUrl("https://dnd.su/spells/")).Concat(await homebrewParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/")).ToArray();
+        var homebrewLinks = await linksParser.GetLinksFromUrl("https://dnd.su/homebrew/spells/");
+        await Task.Delay(500); // Без задержки селениум иногда выкидывает ошибку
+        var handbookLinks = await linksParser.GetLinksFromUrl("https://dnd.su/spells/");
+
+        return  homebrewLinks.Concat(handbookLinks).ToArray();
     }
 
     private async Task<IEnumerable<Spell>> TryParseSpellsData()
@@ -46,7 +49,7 @@ public class SpellParser : ISpellParser
             if (_links.Length == 0) break;
         }
 
-        if (_links.Any())
+        if (_links.Length != 0)
         {
             Console.WriteLine($"dnd.su parser >> {_links.Length} из {_totalLinks} ссылок не удалось спарсить.");
         }
