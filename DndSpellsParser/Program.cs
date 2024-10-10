@@ -5,7 +5,7 @@ class Program
     static async Task Main(string[] args)
     {
         var start = DateTime.Now;
-        using SpellParsersGroup group = new(new DnDSu.SpellParser(), new TTGClub.ParserManager());
+        using SpellParsersGroup group = new(new DnDSu.SpellParser(), new TTGClub.SpellParser());
         var spellsTask = group.RunAsync();
 
         while (group.UnitsProgress.Any(x => x < 1))
