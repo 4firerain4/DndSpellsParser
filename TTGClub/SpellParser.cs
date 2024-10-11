@@ -7,9 +7,9 @@ namespace TTGClub
         public double Progress => _linksProcessed / (double)_totalLinks;
         private int _totalLinks = 1;
         private int _linksProcessed = 0;
-        private string _url = "https://ttg.club/api/v1/spells";
+        private readonly string _spellListUrl = "https://ttg.club/api/v1/spells";
+        private readonly HttpClient _client = new();
         private List<Spell> _spells = new();
-        private HttpClient _client = new();
 
         public async Task<IEnumerable<Spell>> ParseSpellsAsync()
         {
@@ -17,13 +17,13 @@ namespace TTGClub
 
             using var content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
 
-            var links = await SendRequestAsync(content, _url);
-            var clearLinks = JsonSpellParser.ParseLinks(links);
-            _totalLinks = clearLinks.Count;
+            var linksInJson = await SendRequestAsync(content, _spellListUrl);
+            var spellLinks = JsonSpellParser.ParseLinks(linksInJson);
+            _totalLinks = spellLinks.Count;
 
             int iterator = 0;
 
-            foreach (string link in clearLinks)
+            foreach (string link in spellLinks)
             {
                 await Task.Delay(50);
                 _spells.Add(JsonSpellParser.ParseData(await SendRequestAsync(content, link)));
@@ -46,7 +46,7 @@ namespace TTGClub
 
         public void Dispose()
         {
-
+            _client.Dispose();
         }
     }
 }
