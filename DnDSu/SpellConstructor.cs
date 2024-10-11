@@ -43,9 +43,9 @@ internal class SpellConstructor
         }
         catch
         {
-#if DEBUG
-            Console.WriteLine($"dnd.su parser >> Ошибка сборки заклинания: {spell.Url}.");
-#endif
+            // #if DEBUG
+            //     Console.WriteLine($"dnd.su parser >> Ошибка сборки заклинания: {spell.Url}.");
+            // #endif
             throw new Exception($"Ошибка сборки заклинания: {spell.Url}");
         }
 
