@@ -64,6 +64,7 @@ internal static class WebDriversFabric
         options.AddArgument("--log-level=3");
         options.AddArgument("--disable-extensions");
         options.AddArgument("--mute-audio");
+        options.PageLoadStrategy = PageLoadStrategy.Eager;
 
         return new EdgeDriver(service, options);
     }
@@ -83,31 +84,33 @@ internal static class WebDriversFabric
         options.AddArgument("--disable-extensions");
         options.AddArgument("--mute-audio");
         options.AddArgument("--no-sandbox");
+        options.PageLoadStrategy = PageLoadStrategy.Eager;
 
         return new ChromeDriver(service, options);
     }
 
     private static IWebDriver GetFirefoxDriver()
     {
-        var mozService = FirefoxDriverService.CreateDefaultService();
-        mozService.HideCommandPromptWindow = true;
-        mozService.SuppressInitialDiagnosticInformation = true;
-        mozService.LogLevel = FirefoxDriverLogLevel.Fatal;
+        var service = FirefoxDriverService.CreateDefaultService();
+        service.HideCommandPromptWindow = true;
+        service.SuppressInitialDiagnosticInformation = true;
+        service.LogLevel = FirefoxDriverLogLevel.Fatal;
 
         Console.SetError(TextWriter.Null);
 
-        var mozOptions = new FirefoxOptions();
-        mozOptions.AddArgument("--headless");
-        mozOptions.AddArgument("--safe-mode");
+        var options = new FirefoxOptions();
+        options.AddArgument("--headless");
+        options.AddArgument("--safe-mode");
+        options.PageLoadStrategy = PageLoadStrategy.Eager;
 
-        mozOptions.LogLevel = FirefoxDriverLogLevel.Default;
-        mozOptions.SetLoggingPreference(LogType.Browser, LogLevel.Off);
-        mozOptions.SetLoggingPreference(LogType.Client, LogLevel.Off);
-        mozOptions.SetLoggingPreference(LogType.Driver, LogLevel.Off);
-        mozOptions.SetLoggingPreference(LogType.Server, LogLevel.Off);
-        mozOptions.SetLoggingPreference(LogType.Performance, LogLevel.Off);
-        mozOptions.SetLoggingPreference(LogType.Profiler, LogLevel.Off);
+        options.LogLevel = FirefoxDriverLogLevel.Fatal;
+        options.SetLoggingPreference(LogType.Browser, LogLevel.Off);
+        options.SetLoggingPreference(LogType.Client, LogLevel.Off);
+        options.SetLoggingPreference(LogType.Driver, LogLevel.Off);
+        options.SetLoggingPreference(LogType.Server, LogLevel.Off);
+        options.SetLoggingPreference(LogType.Performance, LogLevel.Off);
+        options.SetLoggingPreference(LogType.Profiler, LogLevel.Off);
 
-        return new FirefoxDriver(mozService, mozOptions);
+        return new FirefoxDriver(service, options);
     }
 }
