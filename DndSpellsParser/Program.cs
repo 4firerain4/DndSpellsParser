@@ -8,7 +8,7 @@ class Program
         using SpellParsersGroup group = new(new DnDSu.SpellParser(), new TTGClub.ParserManager());
         var spellsTask = group.RunAsync();
 
-        while (group.UnitsProgress.All(x => x < 1))
+        while (group.UnitsProgress.Any(x => x < 1))
         {
             await Task.Delay(1000);
             Console.Clear();
