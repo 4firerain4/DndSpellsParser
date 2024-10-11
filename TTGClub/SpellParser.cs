@@ -28,9 +28,9 @@ namespace TTGClub
                 await Task.Delay(50);
                 _spells.Add(JsonSpellParser.ParseData(await SendRequestAsync(content, link)));
                 
-                // #if DEBUG
-                //     Console.WriteLine($"Заклинание \"{_spells[iterator].Title}\" спершено");
-                // #endif
+                #if DEBUG
+                    Console.WriteLine($"Заклинание \"{_spells[iterator].Title}\" спершено");
+                #endif
                 iterator++;
                 _linksProcessed++;
             }
