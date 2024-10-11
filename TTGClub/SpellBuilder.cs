@@ -5,15 +5,9 @@ using System.Text.Json.Nodes;
 
 namespace TTGClub
 {
-    internal static class JsonSpellParser
+    internal static class SpellBuilder
     {
-        public static List<string> ParseLinks(string jsonSpells)
-        {
-            JsonArray array = JsonNode.Parse(jsonSpells).AsArray();
-            return array.Select(x => $"https://ttg.club/api/v1/spells{x["url"].ToString().Substring(7)}").ToList();
-        }
-
-        public static Spell ParseData(string json)
+        public static Spell FromJson(string json)
         {
             Spell spell = new();
 

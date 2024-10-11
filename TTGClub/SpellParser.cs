@@ -1,3 +1,4 @@
+using System.Text.Json.Nodes;
 using Shared;
 
 namespace TTGClub
@@ -18,7 +19,7 @@ namespace TTGClub
             using var content = new StringContent(requestBody, System.Text.Encoding.UTF8, "application/json");
 
             var linksInJson = await SendRequestAsync(content, _spellListUrl);
-            var spellLinks = JsonSpellParser.ParseLinks(linksInJson);
+            var spellLinks = ParseLinks(linksInJson);
             _totalLinks = spellLinks.Count;
 
             int iterator = 0;
@@ -26,7 +27,7 @@ namespace TTGClub
             foreach (string link in spellLinks)
             {
                 await Task.Delay(50);
-                _spells.Add(JsonSpellParser.ParseData(await SendRequestAsync(content, link)));
+                _spells.Add(SpellBuilder.FromJson(await SendRequestAsync(content, link)));
                 
                 // #if DEBUG
                 //     Console.WriteLine($"Заклинание \"{_spells[iterator].Title}\" спершено");
@@ -42,6 +43,12 @@ namespace TTGClub
             var response = await _client.PostAsync(link, content);
             var responseBody = await response.Content.ReadAsStringAsync();
             return responseBody;
+        }
+        
+        private List<string> ParseLinks(string jsonLinks)
+        {
+            JsonArray array = JsonNode.Parse(jsonLinks).AsArray();
+            return array.Select(x => $"https://ttg.club/api/v1/spells{x["url"].ToString().Substring(7)}").ToList();
         }
 
         public void Dispose()
