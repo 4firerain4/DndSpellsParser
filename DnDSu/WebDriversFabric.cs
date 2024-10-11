@@ -82,6 +82,7 @@ internal static class WebDriversFabric
         options.AddArgument("--log-level=3");
         options.AddArgument("--disable-extensions");
         options.AddArgument("--mute-audio");
+        options.AddArgument("--no-sandbox");
 
         return new ChromeDriver(service, options);
     }
