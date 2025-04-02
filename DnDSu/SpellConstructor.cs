@@ -102,6 +102,14 @@ internal class SpellConstructor
 
     private string PullStrongList(int line)
     {
+        if (line == 6)
+            if (!_document.DocumentNode.SelectSingleNode($"(//ul[contains(@class,'card__article-body')]/li)[{line}]").InnerHtml.ToString().Contains("<strong>Классы:"))
+                return "";
+    
+        if (line == 7)
+            if (!_document.DocumentNode.SelectSingleNode($"(//ul[contains(@class,'card__article-body')]/li)[{line}]").InnerHtml.ToString().Contains("<strong>Источник:"))
+                line--;
+            
         var data = _document.DocumentNode.SelectSingleNode($"(//ul[contains(@class,'card__article-body')]/li)[{line}]").InnerHtml
             .Split("</strong>", StringSplitOptions.TrimEntries | StringSplitOptions.RemoveEmptyEntries)[^1];
         return data;
